@@ -1,0 +1,23 @@
+<launch> 
+
+	<!-- Find the turtlebot urdf -->
+	<param name="robot_description" command="$(find xacro)/xacro.py '$(find turtlebot_description)/urdf/turtlebot.urdf.xacro'" />
+
+	<!-- Spawn the turtlebot -->
+	<!-- <node name="spawn_turtlebot_model" pkg="gazebo" type="spawn_model" args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model turtlebot" respawn="false" output="screen" /> -->
+	<node name="spawn_turtlebot_model" pkg="gazebo" type="spawn_model" args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model turtlebot" respawn="false" output="log" />
+
+	<!-- Run diagnostic aggregator -->
+	<!-- <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" > -->
+	<node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" output="log" >
+		<!-- Load diagnostic? -->
+		<rosparam command="load" file="$(find turtlebot_bringup)/config/diagnostics.yaml"/>
+	</node>
+
+	<!-- Publish turtlebot state -->
+	<!-- <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" output="screen"> -->
+	<node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" output="log" >
+		<param name="publish_frequency" type="double" value="30.0" />
+	</node>
+
+</launch>

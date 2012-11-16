@@ -1,0 +1,17 @@
+<!-- startSimulation.launch -->
+<!-- Run this to start Gazebo simulation -->
+
+<launch>
+	<!-- Start Gazebo with an empty plane -->
+	<param name="/use_sim_time" value="true" />
+
+	<!-- Start Gazebo with an empty world -->
+	<node name="gazebo" pkg="gazebo" type="gazebo" args="-u $(find  tortuninja)/worlds/empty.world" respawn="false" output="screen"  />
+
+	<!-- Start the Graphical Interface -->
+	<node name="gazebo_gui" pkg="gazebo" type="gui" />
+
+	<!-- Include turtlebot launch file -->
+	<include file="$(find tortuninja)/launch/turtlebot.launch" />
+
+</launch>

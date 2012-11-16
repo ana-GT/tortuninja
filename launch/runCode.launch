@@ -1,0 +1,19 @@
+<!-- runCode.launch -->
+<!-- Run this to start running code teleop -->
+
+<launch>
+
+	<!-- Start teleop node -->
+	<!-- <node pkg="tortuninja" type="turtlebot_teleop" name="turtlebot_teleop_keyboard" output="screen">
+		<param name="scalar_linear" value="0.5" type="double" />
+		<param name="scalar_angular" value="1.5" type="double" />
+	</node> -->
+
+
+	<!-- Start wander -->
+	<node pkg="tortuninja" type="turtlebot_wander" name="turtlebot_wander" output="screen">
+		<param name="scalar_linear" value="0.5" type="double" />
+		<param name="scalar_angular" value="1.5" type="double" />
+	</node>
+
+</launch>
