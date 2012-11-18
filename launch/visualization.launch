@@ -1,0 +1,12 @@
+<!-- Launch file for Visualization purposes -->
+<launch>
+	<!-- OpenCV Visualization stuff -->
+	<node name="grabImage" pkg="tortuninja" type="grabImage">
+		<remap from="in" to="/camera/image_raw" />
+	</node>
+	
+	<!-- PCL Visualization stuff -->
+	<node name="grabPointcloud" pkg="tortuninja" type="grabPointcloud"> 
+		<remap   from="input" to="/camera/depth/points"/>
+	</node>
+</launch>

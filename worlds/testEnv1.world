@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+
+<gazebo:world
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:gazebo="http://playerstage.sourceforge.net/gazebo/xmlschema/#gz"
+	xmlns:model="http://playerstage.sourceforge.net/gazebo/xmlschema/#model"
+	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+	xmlns:window="http://playerstage.sourceforge.net/gazebo/xmlschema/#window"
+	xmlns:param="http://playerstage.sourceforge.net/gazebo/xmlschema/#param"
+	xmlns:body="http://playerstage.sourceforge.net/gazebo/xmlschema/#body"
+	xmlns:geo="http://playerstage.sourceforge.net/gazebo/xmlschema/#geo"
+	xmlns:geom="http://playerstage.sourceforge.net/gazebo/xmlschema/#geom"
+	xmlns:joint="http://playerstage.sourceforge.net/gazebo/xmlschema/#joint"
+	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+	xmlns:ui="http://playerstage.sourceforge.net/gazebo/xmlschema/#ui"
+	xmlns:rendering="http://playerstage.sourceforge.net/gazebo/xmlschema/#rendering"
+	xmlns:renderable="http://playerstage.sourceforge.net/gazebo/xmlschema/#renderable"
+	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+	xmlns:physics="http://playerstage.sourceforge.net/gazebo/xmlschema/#physics">
+
+<thread>4</thread>
+<verbosity>5</verbosity>
+
+<!-- ODE Simulation Parameters -->
+<physics:ode>
+	<stepTime>0.001</stepTime>
+	<gravity>0.001</gravity>
+	<cfm>0.0000000001</cfm>
+	<erp>0.2</erp>
+	<quickStep>true</quickStep>
+	<quickStepIters>200</quickStepIters>
+	<quickStepW>1.0</quickStepW>
+	<contactMaxCorrectingVel>100.0</contactMaxCorrectingVel>
+	<contactSurfaceLayer>0.001</contactSurfaceLayer>
+	<updateRate>300</updateRate>		
+</physics:ode>
+
+<!-- Origin -->
+<geo:origin>
+	<lat>37</lat>
+	<lon>-122</lon>
+</geo:origin>
+
+<!-- Rendering details-->
+<rendering:gui>
+	<type>fltk</type>
+	<size>480 320</size>
+	<pos>0 0</pos>
+	<frames>
+		<row height="100%">
+			<camera width="100%">
+				<xyz>0.3 0 3</xyz>
+				<rpy>0 90 90</rpy>
+			</camera>
+		</row>
+	</frames>
+</rendering:gui>
+
+<!-- Rendering Ogre-->
+<rendering:ogre>
+	<ambient>0.5 0.5 0.5 0.5</ambient>
+	<sky>
+		<material>Gazebo/CloudySky</material>
+	</sky>
+	<grid>false</grid>
+	<maxUpdateRate>10.0</maxUpdateRate>
+	<shadowTechnique>none</shadowTechnique>
+	<shadows>false</shadows>
+</rendering:ogre>
+
+<!-- Ground Plane -->
+<model:physical name="gplane">
+	<xyz>0 0 0</xyz>
+	<rpy>0 0 0</rpy>
+	<static>true</static>
+
+	<body:plane name="plane">
+		<geom:plane name="plane">
+			<laserRetro>2000.0</laserRetro>
+			<mu1>50.0</mu1>
+			<mu2>50.0</mu2>
+			<kp>1000000000.0</kp>
+			<kd>1.0</kd>
+			<normal>0 0 1</normal>
+			<size>10 10</size>
+			<visual>
+				<size>10 10</size>
+				<material>Gazebo/GrayGrid</material>
+			</visual>
+			<segments>10 10</segments>
+			<uvTile>100 100</uvTile>
+
+		</geom:plane>
+	</body:plane>
+</model:physical>
+
+  <!-- The wall in front map3.png -->
+  <model:physical name="wall_2_model">
+    <xyz> 11.6  -1.55   1.0</xyz>
+    <rpy>   0.0    0.0    0.0</rpy>
+    <static>true</static>
+    <body:box name="wall_2_body">
+      <geom:box name="wall_2_geom">
+        <mesh>default</mesh>
+        <size>2.1  32.8 2.0</size>
+        <visual>
+          <size>2.1  32.8 2.0</size>
+          <material>Gazebo/Blue</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical>
+
+  <!-- The wall behind -->
+  <model:physical name="wall_1_model">
+    <xyz> -11.3   -1.45   1.0</xyz>
+    <rpy>   0.0    0.0    0.0</rpy>
+    <static>true</static>
+    <body:box name="wall_1_body">
+      <geom:box name="wall_1_geom">
+        <mesh>default</mesh>
+        <size>0.4  24.0 2.0</size>
+        <visual>
+          <size>0.4  24.0 2.0</size>
+          <material>Gazebo/Blue</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical>
+
+  <!-- The wall 3 -->
+  <model:physical name="wall_3_model">
+    <xyz>  6.7   8.05   1.0</xyz>
+    <rpy>   0.0    0.0    0.0</rpy>
+    <static>true</static>
+    <body:box name="wall_3_body">
+      <geom:box name="wall_3_geom">
+        <mesh>default</mesh>
+        <size>7.5  1.2 2.0</size>
+        <visual>
+          <size>7.5  1.2 2.0</size>
+          <material>Gazebo/Blue</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical>
+
+	<!-- Object 1 (Red cylinder) -->
+	<model:physical name="cylinder_1_model">
+		<xyz>1.0 0.0 0.0</xyz>
+		<rpy>0.0 0.0 45.0</rpy>
+		<body:cylinder name="cylinder_1_body">
+			<xyz>0.0 0.0 0.1</xyz>
+			<rpy>0.0 0.0 0.0</rpy>
+			<massMatrix>true</massMatrix>
+			<mass>1.0</mass>
+			<ixx>0.01</ixx>
+			<ixy>0.0</ixy>
+			<ixz>0.0</ixz>
+			<iyy>0.01</iyy>
+			<iyz>0.0</iyz>
+			<izz>0.01</izz>
+			<cx>0.0</cx>
+			<cy>0.0</cy>
+			<cz>0.0</cz>
+			<geom:cylinder name="cylinder_1_geom">
+				<xyz>0.0 0.0 0.0</xyz>
+				<rpy>0.0 0.0 0.0</rpy>
+				<kp>100000000.0</kp>
+				<kd>1.0</kd>
+				<mu1>500.0</mu1>
+				<mesh>default</mesh>
+				<size>0.1 0.2</size>	
+				<visual>
+					<size>0.2 0.2 0.2</size>
+					<material>Gazebo/Red</material>
+					<mesh>unit_cylinder</mesh>
+				</visual>
+			</geom:cylinder>
+		</body:cylinder>
+		<static>true</static>
+	</model:physical>
+
+	<!-- Object 2 (Blue cylinder) -->
+	<model:physical name="cylinder_2_model">
+		<xyz>-0.1 -0.7 0.0</xyz>
+		<rpy>0.0 0.0 45.0</rpy>
+		<body:cylinder name="cylinder_2_body">
+			<xyz>0.0 0.0 0.1</xyz>
+			<rpy>0.0 0.0 0.0</rpy>
+			<massMatrix>true</massMatrix>
+			<mass>1.0</mass>
+			<ixx>0.01</ixx>
+			<ixy>0.0</ixy>
+			<ixz>0.0</ixz>
+			<iyy>0.01</iyy>
+			<iyz>0.0</iyz>
+			<izz>0.01</izz>
+			<cx>0.0</cx>
+			<cy>0.0</cy>
+			<cz>0.0</cz>
+			<geom:cylinder name="cylinder_2_geom">
+				<xyz>0.0 0.0 0.0</xyz>
+				<rpy>0.0 0.0 0.0</rpy>
+				<kp>100000000.0</kp>
+				<kd>1.0</kd>
+				<mu1>500.0</mu1>
+				<mesh>default</mesh>
+				<size>0.1 0.2</size>	
+				<visual>
+					<size>0.2 0.2 0.2</size>
+					<material>Gazebo/Blue</material>
+					<mesh>unit_cylinder</mesh>
+				</visual>
+			</geom:cylinder>
+		</body:cylinder>
+		<static>true</static>
+	</model:physical>
+
+	<!-- Object 3 (Green box) -->
+	<model:physical name="box_2_model">
+		<xyz>-1.0 0.2 0.0</xyz>
+		<rpy>0.0 0.0 0.0</rpy>
+		<body:box name="box_2_body">
+			<xyz>0.0 0.0 0.1</xyz>
+			<rpy>0.0 0.0 0.0</rpy>
+			<massMatrix>true</massMatrix>
+			<mass>1.0</mass>
+			<ixx>0.01</ixx>
+			<ixy>0.0</ixy>
+			<ixz>0.0</ixz>
+			<iyy>0.01</iyy>
+			<iyz>0.0</iyz>
+			<izz>0.01</izz>
+			<cx>0.0</cx>
+			<cy>0.0</cy>
+			<cz>0.0</cz>
+			<geom:box name="box_2_geom">
+				<xyz>0.0 0.0 0.0</xyz>
+				<rpy>0.0 0.0 0.0</rpy>
+				<kp>100000000.0</kp>
+				<kd>1.0</kd>
+				<mu1>500.0</mu1>
+				<mesh>default</mesh>
+				<size>0.8 0.2 0.2</size>	
+				<visual>
+					<size>0.8 0.2 0.2</size>
+					<material>Gazebo/Green</material>
+					<mesh>unit_box</mesh>
+				</visual>
+			</geom:box>
+		</body:box>
+	</model:physical>
+
+	<!-- Object 4 (Yellow box) -->
+	<model:physical name="box_3_model">
+		<xyz>0.2 0.5 0.0</xyz>
+		<rpy>0.0 0.0 0.0</rpy>
+		<body:box name="box_3_body">
+			<xyz>0.0 0.0 0.1</xyz>
+			<rpy>0.0 0.0 0.0</rpy>
+			<massMatrix>true</massMatrix>
+			<mass>1.0</mass>
+			<ixx>0.01</ixx>
+			<ixy>0.0</ixy>
+			<ixz>0.0</ixz>
+			<iyy>0.01</iyy>
+			<iyz>0.0</iyz>
+			<izz>0.01</izz>
+			<cx>0.0</cx>
+			<cy>0.0</cy>
+			<cz>0.0</cz>
+			<geom:box name="box_3_geom">
+				<xyz>0.0 0.0 0.0</xyz>
+				<rpy>0.0 0.0 0.0</rpy>
+				<kp>100000000.0</kp>
+				<kd>1.0</kd>
+				<mu1>500.0</mu1>
+				<mesh>default</mesh>
+				<size>0.9 0.3 0.2</size>	
+				<visual>
+					<size>0.9 0.3 0.2</size>
+					<material>Gazebo/Yellow</material>
+					<mesh>unit_box</mesh>
+				</visual>
+			</geom:box>
+		</body:box>
+	</model:physical>
+
+	<!-- Object 5: Box -->
+  <model:physical name="box_4_model">
+    <xyz>  -0.8   -0.8    0.0 </xyz>
+    <rpy>   0.0    0.0  -45.0 </rpy>
+    <body:box name="box_4_body">
+      <xyz>0 0 0.1</xyz>
+      <rpy>0 0 0.0</rpy>
+      <massMatrix>true</massMatrix>
+      <mass>1.0</mass>
+      <ixx>0.01</ixx>
+      <ixy>0.0</ixy>
+      <ixz>0.0</ixz>
+      <iyy>0.01</iyy>
+      <iyz>0.0</iyz>
+      <izz>0.01</izz>
+      <cx>0.0</cx>
+      <cy>0.0</cy>
+      <cz>0.0</cz>
+      <geom:box name="box_4_geom">
+        <xyz>0.0 0.0 0.0</xyz>
+        <rpy>0.0 0.0 0.0</rpy>
+        <kp>100000000.0</kp>
+        <kd>1.0</kd>
+        <mu1>500.0</mu1>
+        <mesh>default</mesh>
+        <size>0.9 0.3 0.2</size>
+        <visual>
+          <size>0.9 0.3 0.2</size>
+          <material>Gazebo/Yellow</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical>
+
+	<!-- Object 6: Box -->
+  <model:physical name="box_5_model">
+    <xyz>   0.3   -0.8    0.0 </xyz>
+    <rpy>   0.0    0.0  -20.0 </rpy>
+    <body:box name="box_5_body">
+      <xyz>0 0 0.1</xyz>
+      <rpy>0 0 0.0</rpy>
+      <massMatrix>true</massMatrix>
+      <mass>1.0</mass>
+      <ixx>0.01</ixx>
+      <ixy>0.0</ixy>
+      <ixz>0.0</ixz>
+      <iyy>0.01</iyy>
+      <iyz>0.0</iyz>
+      <izz>0.01</izz>
+      <cx>0.0</cx>
+      <cy>0.0</cy>
+      <cz>0.0</cz>
+      <geom:box name="box_5_geom">
+        <xyz>0.0 0.0 0.0</xyz>
+        <rpy>0.0 0.0 0.0</rpy>
+        <kp>100000000.0</kp>
+        <kd>1.0</kd>
+        <mu1>500.0</mu1>
+        <mesh>default</mesh>
+        <size>0.1 0.2 0.2</size>
+        <visual>
+          <size>0.1 0.2 0.2</size>
+          <material>Gazebo/Green</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical>
+
+
+  <!-- White Point light -->
+  <model:renderable name="point_white">
+    <xyz>0.0 0.0 10.0</xyz>
+    <enableGravity>false</enableGravity>
+    <light>
+      <type>point</type>
+			<cast_shadows>true</cast_shadows>
+      <diffuseColor>0.5 0.5 0.5</diffuseColor>
+      <specularColor>.1 .1 .1</specularColor>
+      <attenuation>0.2 0.1 0</attenuation>
+      <range>10</range>
+    </light>
+  </model:renderable>
+</gazebo:world>

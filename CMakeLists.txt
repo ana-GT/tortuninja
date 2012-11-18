@@ -28,8 +28,18 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_link_boost(${PROJECT_NAME} thread)
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
+
+#Uses PCL
+find_package( PCL REQUIRED )
+include_directories( ${PCL_INCLUDE_DIRS} )
+link_directories( ${PCL_LIBRARY_DIRS} )
+
 rosbuild_add_executable( turtlebot_teleop src/turtlebot_key.cpp )
 target_link_libraries( turtlebot_teleop tinyxml )
 
 rosbuild_add_executable( turtlebot_wander src/turtlebot_wander.cpp )
 target_link_libraries( turtlebot_wander tinyxml )
+# Image Processing - OpenCV
+rosbuild_add_executable( grabImage src/grabImage.cpp )
+# Pointcloud Processing - PCL
+rosbuild_add_executable( grabPointcloud src/grabPointcloud.cpp ) 

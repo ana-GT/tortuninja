@@ -6,7 +6,7 @@
 	<param name="/use_sim_time" value="true" />
 
 	<!-- Start Gazebo with an empty world -->
-	<node name="gazebo" pkg="gazebo" type="gazebo" args="-u $(find  tortuninja)/worlds/empty.world" respawn="false" output="screen"  />
+	<node name="gazebo" pkg="gazebo" type="gazebo" args="-u $(find  tortuninja)/worlds/testEnv1.world" respawn="false" output="screen"  />
 
 	<!-- Start the Graphical Interface -->
 	<node name="gazebo_gui" pkg="gazebo" type="gui" />
