@@ -94,17 +94,17 @@
 	</body:plane>
 </model:physical>
 
-  <!-- The wall in front map3.png -->
-  <model:physical name="wall_2_model">
-    <xyz> 11.6  -1.55   1.0</xyz>
-    <rpy>   0.0    0.0    0.0</rpy>
+  <!-- The wall in front -->
+  <model:physical name="wall_front_model">
+    <xyz> 0.0  -2.5   0.5</xyz>
+    <rpy> 0.0    0.0    0.0</rpy>
     <static>true</static>
-    <body:box name="wall_2_body">
-      <geom:box name="wall_2_geom">
+    <body:box name="wall_front_body">
+      <geom:box name="wall_front_geom">
         <mesh>default</mesh>
-        <size>2.1  32.8 2.0</size>
+        <size>5.0  0.1 1.0</size>
         <visual>
-          <size>2.1  32.8 2.0</size>
+          <size>5.0 0.1 1.0</size>
           <material>Gazebo/Blue</material>
           <mesh>unit_box</mesh>
         </visual>
@@ -113,16 +113,34 @@
   </model:physical>
 
   <!-- The wall behind -->
-  <model:physical name="wall_1_model">
-    <xyz> -11.3   -1.45   1.0</xyz>
-    <rpy>   0.0    0.0    0.0</rpy>
+  <model:physical name="wall_behind_model">
+    <xyz> 0.0  2.5   0.5</xyz>
+    <rpy> 0.0    0.0    0.0</rpy>
     <static>true</static>
-    <body:box name="wall_1_body">
-      <geom:box name="wall_1_geom">
+    <body:box name="wall_behind_body">
+      <geom:box name="wall_behind_geom">
         <mesh>default</mesh>
-        <size>0.4  24.0 2.0</size>
+        <size>5.0 0.1 1.0</size>
         <visual>
-          <size>0.4  24.0 2.0</size>
+          <size>5.0  0.1 1.0</size>
+          <material>Gazebo/Blue</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical> -->
+
+  <!-- The wall Left -->
+  <model:physical name="wall_left_model">
+    <xyz>  -2.5 0.0 0.5</xyz>
+    <rpy>   0.0    0.0    90.0</rpy>
+    <static>true</static>
+    <body:box name="wall_left_body">
+      <geom:box name="wall_left_geom">
+        <mesh>default</mesh>
+        <size>5.0 0.1 1.0</size>
+        <visual>
+          <size>5.0 0.1 1.0</size>
           <material>Gazebo/Blue</material>
           <mesh>unit_box</mesh>
         </visual>
@@ -130,17 +148,17 @@
     </body:box>
   </model:physical>
 
-  <!-- The wall 3 -->
-  <model:physical name="wall_3_model">
-    <xyz>  6.7   8.05   1.0</xyz>
-    <rpy>   0.0    0.0    0.0</rpy>
+  <!-- The wall Right -->
+  <model:physical name="wall_right_model">
+    <xyz>2.5 0.0 0.5</xyz>
+    <rpy>0.0    0.0    90.0</rpy>
     <static>true</static>
-    <body:box name="wall_3_body">
-      <geom:box name="wall_3_geom">
+    <body:box name="wall_right_body">
+      <geom:box name="wall_right_geom">
         <mesh>default</mesh>
-        <size>7.5  1.2 2.0</size>
+        <size>5.0 0.1 1.0</size>
         <visual>
-          <size>7.5  1.2 2.0</size>
+          <size>5.0 0.1 1.0</size>
           <material>Gazebo/Blue</material>
           <mesh>unit_box</mesh>
         </visual>
@@ -150,7 +168,7 @@
 
 	<!-- Object 1 (Red cylinder) -->
 	<model:physical name="cylinder_1_model">
-		<xyz>1.0 0.0 0.0</xyz>
+		<xyz>1.5 0.0 0.0</xyz>
 		<rpy>0.0 0.0 45.0</rpy>
 		<body:cylinder name="cylinder_1_body">
 			<xyz>0.0 0.0 0.1</xyz>
@@ -181,12 +199,12 @@
 				</visual>
 			</geom:cylinder>
 		</body:cylinder>
-		<static>true</static>
+		<static>false</static>
 	</model:physical>
 
 	<!-- Object 2 (Blue cylinder) -->
 	<model:physical name="cylinder_2_model">
-		<xyz>-0.1 -0.7 0.0</xyz>
+		<xyz>-0.2 -1.2 0.0</xyz>
 		<rpy>0.0 0.0 45.0</rpy>
 		<body:cylinder name="cylinder_2_body">
 			<xyz>0.0 0.0 0.1</xyz>
@@ -217,12 +235,12 @@
 				</visual>
 			</geom:cylinder>
 		</body:cylinder>
-		<static>true</static>
+		<static>false</static>
 	</model:physical>
 
 	<!-- Object 3 (Green box) -->
 	<model:physical name="box_2_model">
-		<xyz>-1.0 0.2 0.0</xyz>
+		<xyz>-1.0 0.6 0.0</xyz>
 		<rpy>0.0 0.0 0.0</rpy>
 		<body:box name="box_2_body">
 			<xyz>0.0 0.0 0.1</xyz>
@@ -257,7 +275,7 @@
 
 	<!-- Object 4 (Yellow box) -->
 	<model:physical name="box_3_model">
-		<xyz>0.2 0.5 0.0</xyz>
+		<xyz>0.8 0.5 0.0</xyz>
 		<rpy>0.0 0.0 0.0</rpy>
 		<body:box name="box_3_body">
 			<xyz>0.0 0.0 0.1</xyz>
@@ -288,6 +306,7 @@
 				</visual>
 			</geom:box>
 		</body:box>
+		<static>false</static>
 	</model:physical>
 
 	<!-- Object 5: Box -->
@@ -323,11 +342,12 @@
         </visual>
       </geom:box>
     </body:box>
+		<static>false</static>
   </model:physical>
 
 	<!-- Object 6: Box -->
   <model:physical name="box_5_model">
-    <xyz>   0.3   -0.8    0.0 </xyz>
+    <xyz>   0.6   -0.8    0.0 </xyz>
     <rpy>   0.0    0.0  -20.0 </rpy>
     <body:box name="box_5_body">
       <xyz>0 0 0.1</xyz>
@@ -358,6 +378,7 @@
         </visual>
       </geom:box>
     </body:box>
+		<static>false</static>
   </model:physical>
 
 

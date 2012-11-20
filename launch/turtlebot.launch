@@ -51,7 +51,8 @@
 		<param name="min_height" value="-0.025" />
 		<param name="max_height" value="0.025" />
 		<remap from="cloud" to="/cloud_throttled" />
-		<remap from="scan" to="/narrow_scan" />
+		<!-- <remap from="scan" to="/narrow_scan" /> -->
+		<remap from="scan" to="scan" />
 	</node>	
 
 </launch>
