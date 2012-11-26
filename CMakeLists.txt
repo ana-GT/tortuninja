@@ -43,3 +43,7 @@ target_link_libraries( turtlebot_wander tinyxml )
 rosbuild_add_executable( grabImage src/grabImage.cpp )
 # Pointcloud Processing - PCL
 rosbuild_add_executable( grabPointcloud src/grabPointcloud.cpp ) 
+# Bumps
+rosbuild_add_executable( grabBumps src/grabBumps.cpp ) 
+# Move it baby
+rosbuild_add_executable( moveRobot src/moveRobot.cpp )

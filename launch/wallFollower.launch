@@ -1,0 +1,9 @@
+<!-- Launch file for Wall Following -->
+<launch>
+	<!-- Bumps stuff -->
+	<node name="grabBumps" pkg="tortuninja" type="grabBumps" output="screen">
+		<remap from="input" to="/turtlebot_node/sensor_state" />
+		<remap from="output" to="/cliffState" />
+	</node>
+	
+</launch>

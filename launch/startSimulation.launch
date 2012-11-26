@@ -12,6 +12,6 @@
 	<node name="gazebo_gui" pkg="gazebo" type="gui" />
 
 	<!-- Include turtlebot launch file -->
-	<include file="$(find tortuninja)/launch/turtlebot.launch" />
+ <include file="$(find tortuninja)/launch/turtlebot.launch" /> 
 
 </launch>

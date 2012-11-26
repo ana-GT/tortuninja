@@ -1,0 +1,37 @@
+<!-- startMultirobotSimulation.launch -->
+<!-- Start simulation with 2 turtlebots -->
+
+<launch>
+
+	<!-- Start Gazebo with an empty plane -->
+	<param name="/use_sim_time" value="true" />
+
+	<!-- Start Gazebo with an empty world -->
+	<node name="gazebo" pkg="gazebo" type="gazebo" args="-u $(find  tortuninja)/worlds/testEnv1.world" respawn="false" output="screen"  />
+
+	<!-- Start the Graphical Interface -->
+	<node name="gazebo_gui" pkg="gazebo" type="gui" />
+
+	<!-- Include 2 turtlebots -->
+
+  <!-- Turtlebot 1 -->
+ 	<group ns="turtle_1"> 
+  		  <include file="$(find tortuninja)/launch/turtlebotNodes.launch">
+					 <arg name="model_name" value="turtle_1" /> 
+					 <arg name="x" value = "-1.4" />
+					 <arg name="y" value= "2.0" />
+				<arg name="yaw" value="0" />
+        </include> 
+	</group> 
+
+  	<!-- Turtlebot 2 -->
+		<group ns="turtle_2">
+  		<include file="$(find tortuninja)/launch/turtlebotNodes.launch" >
+				<arg  name="model_name" value="turtle_2" /> 
+				<arg name="x" value = "-2.0" />
+				<arg name="y" value= "1.4" />
+				<arg name="yaw" value="-90" />
+			</include>
+		</group> 
+		
+</launch>

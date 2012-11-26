@@ -20,6 +20,9 @@
 	<!-- PCL -->
 	<depend package="pcl" />
 	<depend package="pcl_ros" />
+	<!-- Read bumpers -->
+	<depend package="rospy" />
+	<depend package="turtlebot_node" />
 	
 </package>
 

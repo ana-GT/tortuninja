@@ -1,21 +1,31 @@
 <!-- Turtlebot launch -->
 <launch> 
 
-	<!-- Find the turtlebot urdf -->
-	<param name="robot_description" command="$(find xacro)/xacro.py '$(find turtlebot_description)/urdf/turtlebot.urdf.xacro'" />
+	 <!-- Declare arguments to be passed in -->
+	<arg name="model_name" default = "turtlebot" />
+ 	 <arg name="x" default="0" />
+	 <arg name="y" default="0" />
+	 <arg name="z" default="0" />
+	 <arg name="roll" default="0" />
+	 <arg name="pitch" default="0" />
+	 <arg name="yaw" default="0" />
+
+	 <!-- Start turtlebot urdf -->
+	 <param name="robot_description" command="$(find xacro)/xacro.py '$(find turtlebot_description)/urdf/turtlebot.urdf.xacro'" />
 
 	<!-- Spawn the turtlebot -->
-	<node name="spawn_turtlebot_model" pkg="gazebo" type="spawn_model" args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model turtlebot" respawn="false" output="screen">
+  <node name="spawn_turtlebot_model" pkg="gazebo" type="spawn_model" args=" -unpause -urdf -param robot_description -model $(arg model_name)  -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -namespace $(arg model_name)" respawn="false" output="screen">
 	</node>
 
 	<!-- Run diagnostic aggregator -->
 	<node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-		<rosparam command="load" file="$(find turtlebot_bringup)/config/diagnostics.yaml"/>
-	</node> 
+		 <rosparam command="load" file="$(find turtlebot_bringup)/config/diagnostics.yaml"/>
+	</node> 	
 
 	<!-- Publish turtlebot state -->
 	<node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" output="screen" >
-		<param name="publish_frequency" type="double" value="30.0" />
+		 <param name="publish_frequency" type="double" value="30.0" />
+			<remap from="odom" to="odomba" />
 	</node>
 
 	<!-- Odometry estimator --> 
@@ -24,15 +34,17 @@
 		<param name= "sensor_timeout" value="1.0" />
 		<param name= "publish_tf" value="true" />
 		<param name="odom_used" value="true" />
-		<param name="imu_used" value="false" />
+		<param name="imu_used" value="true" />
 		<param name="vo_used" value="false" />
-		<param name="output_frame" value="odom" />
+		<param name="output_frame" value="odom_combined" />
+		<remap from="odom" to ="turtlebot_node/odom" />
+		<remap from="imu_data" to="imu/data" />
 	</node>	 
 
 	<!-- Throttling -->  
 	<node pkg="nodelet" type="nodelet" name="pointcloud_throttle" args="load pointcloud_to_laserscan/CloudThrottle openni_manager" respawn="true">
 		<param name="max_rate" value="20.0" />
-		<remap from="cloud_in" to="/camera/depth/points" />
+		<remap from="cloud_in" to="camera/depth/points" />
 		<remap from="cloud_out" to="cloud_throttled" />
 	</node> 
 
@@ -54,6 +66,8 @@
 		<remap from="cloud" to="/cloud_throttled" /> 
 		<!-- <remap from="scan" to="/narrow_scan" /> -->
 		<remap from="scan" to="scan" />
-	</node>	
- 
+	</node>	 
+
+
+
 </launch>
