@@ -46,4 +46,4 @@ rosbuild_add_executable( grabPointcloud src/grabPointcloud.cpp )
 # Bumps
 rosbuild_add_executable( grabBumps src/grabBumps.cpp ) 
 # Move it baby
-rosbuild_add_executable( moveRobot src/moveRobot.cpp )
+rosbuild_add_executable( moveRobot src/moveRobot.cpp src/robotController.cpp )

@@ -7,21 +7,21 @@
 <!-- Turtle 1 -->
 <group  ns="turtle_1" if="$(arg moveRobots)">
 
-		<node name="moveRobot" pkg="tortuninja" type="moveRobot">
-			<param name="move_type" value="1" type="int" />
+		<node name="moveRobot" pkg="tortuninja" type="moveRobot" output="screen">
+			<param name="mode" value="0" type="int" />
 			<remap from="cmd_vel" to="turtlebot_node/cmd_vel" />
 		</node>
 
 </group>
 
 <!-- Turtle 2 -->
-<group  ns="turtle_2" if="$(arg moveRobots)">
+<!--<group  ns="turtle_2" if="$(arg moveRobots)">
 
-		<node name="moveRobot" pkg="tortuninja" type="moveRobot">
-			<param name="move_type" value="1" type="int" />
+		<node name="moveRobot" pkg="tortuninja" type="moveRobot" output="screen">
+			<param name="mode" value="1" type="int" />
 			<remap from="cmd_vel" to="turtlebot_node/cmd_vel" />
 		</node>
 
- </group>
+ </group> -->
 	
 </launch>

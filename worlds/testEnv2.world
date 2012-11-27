@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+
+<gazebo:world
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:gazebo="http://playerstage.sourceforge.net/gazebo/xmlschema/#gz"
+	xmlns:model="http://playerstage.sourceforge.net/gazebo/xmlschema/#model"
+	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+	xmlns:window="http://playerstage.sourceforge.net/gazebo/xmlschema/#window"
+	xmlns:param="http://playerstage.sourceforge.net/gazebo/xmlschema/#param"
+	xmlns:body="http://playerstage.sourceforge.net/gazebo/xmlschema/#body"
+	xmlns:geo="http://playerstage.sourceforge.net/gazebo/xmlschema/#geo"
+	xmlns:geom="http://playerstage.sourceforge.net/gazebo/xmlschema/#geom"
+	xmlns:joint="http://playerstage.sourceforge.net/gazebo/xmlschema/#joint"
+	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+	xmlns:ui="http://playerstage.sourceforge.net/gazebo/xmlschema/#ui"
+	xmlns:rendering="http://playerstage.sourceforge.net/gazebo/xmlschema/#rendering"
+	xmlns:renderable="http://playerstage.sourceforge.net/gazebo/xmlschema/#renderable"
+	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+	xmlns:physics="http://playerstage.sourceforge.net/gazebo/xmlschema/#physics">
+
+<thread>4</thread>
+<verbosity>5</verbosity>
+
+<!-- ODE Simulation Parameters -->
+<physics:ode>
+	<stepTime>0.001</stepTime>
+	<gravity>0.001</gravity>
+	<cfm>0.0000000001</cfm>
+	<erp>0.2</erp>
+	<quickStep>true</quickStep>
+	<quickStepIters>200</quickStepIters>
+	<quickStepW>1.0</quickStepW>
+	<contactMaxCorrectingVel>100.0</contactMaxCorrectingVel>
+	<contactSurfaceLayer>0.001</contactSurfaceLayer>
+	<updateRate>300</updateRate>		
+</physics:ode>
+
+<!-- Origin -->
+<geo:origin>
+	<lat>37</lat>
+	<lon>-122</lon>
+</geo:origin>
+
+<!-- Rendering details-->
+<rendering:gui>
+	<type>fltk</type>
+	<size>480 320</size>
+	<pos>0 0</pos>
+	<frames>
+		<row height="100%">
+			<camera width="100%">
+				<xyz>0.3 0 3</xyz>
+				<rpy>0 90 90</rpy>
+			</camera>
+		</row>
+	</frames>
+</rendering:gui>
+
+<!-- Rendering Ogre-->
+<rendering:ogre>
+	<ambient>0.5 0.5 0.5 0.5</ambient>
+	<sky>
+		<material>Gazebo/CloudySky</material>
+	</sky>
+	<grid>false</grid>
+	<maxUpdateRate>10.0</maxUpdateRate>
+	<shadowTechnique>none</shadowTechnique>
+	<shadows>false</shadows>
+</rendering:ogre>
+
+<!-- Ground Plane -->
+<model:physical name="gplane">
+	<xyz>0 0 0</xyz>
+	<rpy>0 0 0</rpy>
+	<static>true</static>
+
+	<body:plane name="plane">
+		<geom:plane name="plane">
+			<laserRetro>2000.0</laserRetro>
+			<mu1>50.0</mu1>
+			<mu2>50.0</mu2>
+			<kp>1000000000.0</kp>
+			<kd>1.0</kd>
+			<normal>0 0 1</normal>
+			<size>10 10</size>
+			<visual>
+				<size>10 10</size>
+				<material>Gazebo/GrayGrid</material>
+			</visual>
+			<segments>10 10</segments>
+			<uvTile>100 100</uvTile>
+
+		</geom:plane>
+	</body:plane>
+</model:physical>
+
+  <!-- The wall in front -->
+  <model:physical name="wall_front_model">
+    <xyz> 0.0  -2.5   0.5</xyz>
+    <rpy> 0.0    0.0    0.0</rpy>
+    <static>true</static>
+    <body:box name="wall_front_body">
+      <geom:box name="wall_front_geom">
+        <mesh>default</mesh>
+        <size>5.0  0.1 1.0</size>
+        <visual>
+          <size>5.0 0.1 1.0</size>
+          <material>Gazebo/Blue</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical>
+
+  <!-- The wall behind -->
+  <model:physical name="wall_behind_model">
+    <xyz> 0.0  2.5   0.5</xyz>
+    <rpy> 0.0    0.0    0.0</rpy>
+    <static>true</static>
+    <body:box name="wall_behind_body">
+      <geom:box name="wall_behind_geom">
+        <mesh>default</mesh>
+        <size>5.0 0.1 1.0</size>
+        <visual>
+          <size>5.0  0.1 1.0</size>
+          <material>Gazebo/Blue</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical> -->
+
+  <!-- The wall Left -->
+  <model:physical name="wall_left_model">
+    <xyz>  -2.5 0.0 0.5</xyz>
+    <rpy>   0.0    0.0    90.0</rpy>
+    <static>true</static>
+    <body:box name="wall_left_body">
+      <geom:box name="wall_left_geom">
+        <mesh>default</mesh>
+        <size>5.0 0.1 1.0</size>
+        <visual>
+          <size>5.0 0.1 1.0</size>
+          <material>Gazebo/Blue</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical>
+
+  <!-- The wall Right -->
+  <model:physical name="wall_right_model">
+    <xyz>2.5 0.0 0.5</xyz>
+    <rpy>0.0    0.0    90.0</rpy>
+    <static>true</static>
+    <body:box name="wall_right_body">
+      <geom:box name="wall_right_geom">
+        <mesh>default</mesh>
+        <size>5.0 0.1 1.0</size>
+        <visual>
+          <size>5.0 0.1 1.0</size>
+          <material>Gazebo/Blue</material>
+          <mesh>unit_box</mesh>
+        </visual>
+      </geom:box>
+    </body:box>
+  </model:physical>
+
+  <!-- White Point light -->
+  <model:renderable name="point_white">
+    <xyz>0.0 0.0 10.0</xyz>
+    <enableGravity>false</enableGravity>
+    <light>
+      <type>point</type>
+			<cast_shadows>true</cast_shadows>
+      <diffuseColor>0.5 0.5 0.5</diffuseColor>
+      <specularColor>.1 .1 .1</specularColor>
+      <attenuation>0.2 0.1 0</attenuation>
+      <range>10</range>
+    </light>
+  </model:renderable>
+</gazebo:world>
