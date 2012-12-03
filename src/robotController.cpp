@@ -51,12 +51,13 @@ void robotController::init() {
   mLinear_Scale = 1.0;
   mAngular_Scale = 1.0;
 
-  mMode = 0; // Clockwise (CW)
+  mMode = 0; 
 
   mNode_private->param( "scale_angular", mAngular_Scale, mAngular_Scale );
   mNode_private->param( "scale_linear", mLinear_Scale, mLinear_Scale );
   mNode_private->param( "mode", mMode, mMode );
   
+  mSubscriber = mNode->subscribe( "odom", 1, &robotController::odometry_callback, this );
   mPublisher_Vel = mNode->advertise<geometry_msgs::Twist>("cmd_vel", 1);
 }
 
@@ -66,6 +67,7 @@ void robotController::init() {
  */
 void robotController::update() {
   publish( mAngular_Vel, mLinear_Vel );
+  printDistanceInfo();
 }
 
 /**
@@ -84,8 +86,23 @@ void robotController::publish( double _angular,
   return;
 }
 
+/////////////////// CALLBACKS /////////////////////
+/**
+ * @function odometry_callback
+ */
+void robotController::odometry_callback( const nav_msgs::Odometry& _msg ) {
+
+  mPosX = _msg.pose.pose.position.x;
+  mPosY = _msg.pose.pose.position.y;
+  mPosZ = _msg.pose.pose.position.z;
+
+  mOrient = 2*atan2(  _msg.pose.pose.orientation.z, _msg.pose.pose.orientation.w );
+
+}
+
 /**
  * @function scan_callback
+ * @brief
  */
 void robotController::scan_callback( const sensor_msgs::LaserScanConstPtr& _scan ) {
   
@@ -96,6 +113,117 @@ void robotController::scan_callback( const sensor_msgs::LaserScanConstPtr& _scan
   // Get distance info
   getDistanceData( _scan );
   //printDistanceInfo();
+}
+
+///////////////////////////////////////////////////////
+
+/**
+ * @function rotate
+ * @brief
+ */
+bool robotController::rotate( float _angle, float _angularSpeed ) {
+
+  float startOrientation;
+  ros::Rate loop_rate(10);
+  bool flag;
+
+  // Read initial value
+  ros::spinOnce();
+  startOrientation = mOrient;
+
+  // Set only rotation
+  mLinear_Vel = 0;
+  if( _angle > 0 ) { mAngular_Vel = _angularSpeed; }
+  else { mAngular_Vel = -_angularSpeed; }
+
+  // Rotate until you got very close to the rotation goal
+  flag = true;
+
+  do {    
+    update();
+    ros::spinOnce();
+    loop_rate.sleep();
+
+    if( _angle > 0 ) {
+      if( mOrient - startOrientation < _angle ) { flag = true; }
+      else { flag = false; }
+    }
+    else {
+      if( mOrient - startOrientation > _angle ) { flag = true; }
+      else { flag = false; }
+    }
+  } while( flag == true  ); 
+
+  // Stop the robot
+  mLinear_Vel = 0.0;
+  mAngular_Vel = 0.0;
+  update();
+
+  return true;
+}
+
+/**
+ * @function goStraight
+ * @brief
+ */
+bool robotController::goStraight( float _distance, float _linearSpeed ) {
+
+  float startPosX, startPosY;
+  float dist;
+  float distanceMod;
+  ros::Rate loop_rate(10);
+  bool flag;
+
+  // Read initial value
+  ros::spinOnce();
+  startPosX = mPosX;
+  startPosY = mPosY;
+
+  // Set only translation
+  mAngular_Vel = 0.0;
+  if( _distance > 0 ) { mLinear_Vel = _linearSpeed; distanceMod = _distance;  }
+  else { mLinear_Vel = -_linearSpeed; distanceMod = -1*_distance; }
+
+  // Go forward until you reach your goal
+  flag = true;
+
+  // Go straight
+  do {    
+    update();
+    ros::spinOnce();
+    loop_rate.sleep();
+
+    dist = sqrt( (mPosX - startPosX)*(mPosX - startPosX) + (mPosY - startPosY)*(mPosY - startPosY) );
+
+    if( dist < distanceMod ) { flag = true; }
+    else { flag = false; }
+    
+    printf("Start x: %f pos x: %f distance: %f, diff: %f \n", startPosX, mPosX, _distance, mPosX - startPosX );
+  } while( flag == true  ); 
+
+
+  // Stop the robot
+  mLinear_Vel = 0.0;
+  mAngular_Vel = 0.0;
+  update();
+
+  return true;
+}
+
+/**
+ * @function approach
+ * @brief
+ */
+void robotController::approach( float _dist, float _danceDist, int _numberSteps ) {
+  
+  // Go straight
+  goStraight( _dist - _danceDist, 0.5 );
+  // Dance 
+  for( unsigned int i = 0; i < _numberSteps; ++i ) {
+    goStraight( _danceDist );
+    goStraight( -1*_danceDist );
+  }
+  
 }
 
 /**
@@ -170,18 +298,44 @@ void robotController::printDistanceInfo() {
  * @function updateBehavior
  */
 void robotController::updateBehavior() {
-  printf("updateBehavior \n");
-  /*  if( mLeftDist > mMinThreshDist ) {
-    mBehavior = GET_CLOSE_LEFT_WALL;
-    }*/
 
-  if( mBehavior == GET_CLOSE_LEFT_WALL ) {
-    getCloseLeftWall();
+  // Following wall left
+  if( mMode == 0 ) {
+    //peekaboo_left( 0.3, 1.57, 5 );
   }
-  else if( mBehavior == STAY_QUIET ){
-    mLinear_Vel = 0;
-    mAngular_Vel = 0;
+  // Following wall right
+  else if( mMode == 1 ) {
+    //peekaboo_right( 0.3, 1.57, 5 );
   }
+  approach( 1.0, 0.3, 3 );
+}
+
+/**
+ * @function peekaboo_right
+ * @brief Walk - look - walk - look
+ */
+void robotController::peekaboo_right( float _lengthStride, float _visionAngle, int _numStrides ) {
+  printf("Start peekaboo right\n");
+  for( unsigned int i = 0; i < _numStrides; ++i ) {
+    goStraight( _lengthStride );
+    rotate( -1*_visionAngle );
+    rotate( _visionAngle );
+  }
+  printf("[peekaboo_right] Finished number of strides: %d  \n", _numStrides);
+}
+
+/**
+ * @function peekaboo_left
+ * @brief Walk - look - walk - look
+ */
+void robotController::peekaboo_left( float _lengthStride, float _visionAngle, int _numStrides ) {
+  printf("Start peekaboo left\n");
+  for( unsigned int i = 0; i < _numStrides; ++i ) {
+    goStraight( _lengthStride );
+    rotate( _visionAngle );
+    rotate( -1*_visionAngle );
+  }
+  printf("[peekaboo_left] Finished number of strides: %d  \n", _numStrides);
 }
 
 /**

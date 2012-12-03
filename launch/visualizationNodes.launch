@@ -4,29 +4,29 @@
 	<arg name="showVisual" value="true" />
 
 <!-- Turtle 1 -->
+<!--
 <group  ns="turtle_1" if="$(arg showVisual)">
 
-		<!--<node name="grabImage" pkg="tortuninja" type="grabImage">
+	 <node name="grabImage" pkg="tortuninja" type="grabImage">
 			<remap from="in" to="camera/image_raw" />
-		</node>-->
+		</node>
 
 	<node name="grabPointcloud" pkg="tortuninja" type="grabPointcloud"> 
 		<remap   from="input" to="camera/depth/points"/>
+	</node> 
 
-	</node>
-
-</group>
+</group> -->
 
 <!-- Turtle 2 -->
 <group  ns="turtle_2" if="$(arg showVisual)">
 
-		<!--<node name="grabImage" pkg="tortuninja" type="grabImage">
+		<node name="grabImage" pkg="tortuninja" type="grabImage">
 			<remap from="in" to="camera/image_raw" />
-		</node>-->
-
+		</node> 
+<!--
 	<node name="grabPointcloud" pkg="tortuninja" type="grabPointcloud"> 
 		<remap   from="input" to="camera/depth/points"/>
-	</node>
+	</node> -->
 
  </group>
 

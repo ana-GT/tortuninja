@@ -3,17 +3,46 @@
 
 <launch>
 
-	<!-- Start teleop node -->
-	<!-- <node pkg="tortuninja" type="turtlebot_teleop" name="turtlebot_teleop_keyboard" output="screen">
-		<param name="scalar_linear" value="0.5" type="double" />
-		<param name="scalar_angular" value="1.5" type="double" />
-	</node> -->
+	<arg name="showVisual" value="true" />
 
+	<!-- Turtlebot to peek at right -->
+	<group ns="turtle_1">
+		<node pkg="tortuninja" type="moveRobot" name="moveRobot" output="screen">
+			<param name="mode" value="1" type="int" />
+			<remap from="cmd_vel" to="turtlebot_node/cmd_vel" />
+			<remap from="odom" to="turtlebot_node/odom" />		
+		</node> 
+	</group> 
 
-	<!-- Start wander -->
-	<node pkg="tortuninja" type="turtlebot_wander" name="turtlebot_wander" output="screen">
-		<param name="scalar_linear" value="0.5" type="double" />
-		<param name="scalar_angular" value="1.5" type="double" />
-	</node>
+	<!-- Turtlebot to peek at left -->
+	<group ns="turtle_2">
+		<node pkg="tortuninja" type="moveRobot" name="moveRobot" output="screen">
+			<param name="mode" value="0" type="int" />
+			<remap from="cmd_vel" to="turtlebot_node/cmd_vel" />
+			<remap from="odom" to="turtlebot_node/odom" />		
+		</node> 
+	</group>
+
+		<!-- Visualization stuff -->
+	<!--
+	<group  ns="turtle_1" if="$(arg showVisual)">
+		<node name="grabImage" pkg="tortuninja" type="grabImage">
+			<remap from="in" to="camera/image_raw" />
+		</node>
+		
+		<node name="grabPointcloud" pkg="tortuninja" type="grabPointcloud"> 
+			<remap   from="input" to="camera/depth/points"/>
+		</node> 
+	</group> 
+
+	<group  ns="turtle_2" if="$(arg showVisual)">
+		<node name="grabImage" pkg="tortuninja" type="grabImage">
+			<remap from="in" to="camera/image_raw" />
+		</node>
+	
+		<node name="grabPointcloud" pkg="tortuninja" type="grabPointcloud"> 
+			<remap   from="input" to="camera/depth/points"/>
+		</node> 
+	</group> -->
 
 </launch>

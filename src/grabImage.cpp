@@ -36,6 +36,7 @@ class ImageConverter {
   }
 
   void imageCb( const sensor_msgs::ImageConstPtr& msg ) {
+    printf("Got callback image \n");
     cv_bridge::CvImagePtr cv_ptr;
     try {
       cv_ptr = cv_bridge::toCvCopy( msg, enc::BGR8 );
