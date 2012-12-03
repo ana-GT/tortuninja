@@ -20,7 +20,7 @@
 <!-- Turtle 2 -->
 <group  ns="turtle_2" if="$(arg showVisual)">
 
-		<node name="grabImage" pkg="tortuninja" type="grabImage">
+		<node name="grabImage" pkg="tortuninja" type="grabImage" output="screen" >
 			<remap from="in" to="camera/image_raw" />
 		</node> 
 <!--
