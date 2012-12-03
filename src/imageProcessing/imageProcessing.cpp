@@ -19,7 +19,7 @@ using namespace cvb;
  */
 imageProcessing::imageProcessing(): mIt( mNh ) {
 
-  mWindowName = "What the robot sees...";
+  mWindowName = "What the robot sees";
   mImage_Pub = mIt.advertise( "out", 1 );
   mImage_Sub = mIt.subscribe( "in", 1, &imageProcessing::imageCallback, this );
   
