@@ -301,13 +301,13 @@ void robotController::updateBehavior() {
 
   // Following wall left
   if( mMode == 0 ) {
-    peekaboo_left( 0.3, 1.57, 5 );
+    //  peekaboo_left( 0.3, 1.57, 5 );
   }
   // Following wall right
   else if( mMode == 1 ) {
-    peekaboo_right( 0.3, 1.57, 5 );
+    //  peekaboo_right( 0.3, 1.57, 5 );
   }
-  //approach( 1.0, 0.3, 3 );
+  approach( 1.0, 0.3, 3 );
 }
 
 /**

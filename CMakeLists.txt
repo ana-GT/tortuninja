@@ -39,17 +39,14 @@ target_link_libraries( turtlebot_teleop tinyxml )
 
 rosbuild_add_executable( turtlebot_wander src/turtlebot_wander.cpp )
 target_link_libraries( turtlebot_wander tinyxml )
+
 # Image Processing - OpenCV
 #rosbuild_add_executable( grabImage src/grabImage.cpp src/imageProcessing/imageProcessing.cpp )
 #target_link_libraries( grabImage /usr/local/lib/libcvblob.so )
 
 # Pointcloud Processing - PCL
 rosbuild_add_executable( grabPointcloud src/grabPointcloud.cpp ) 
-# Bumps
-rosbuild_add_executable( grabBumps src/grabBumps.cpp ) 
-# Move it baby
-rosbuild_add_executable( moveRobot src/moveRobot.cpp src/robotController.cpp )
 
 # Move it baby
-rosbuild_add_executable( goToBlob src/goToBlob/goToBlob.cpp src/goToBlob/imageProcessing.cpp )
+rosbuild_add_executable( moveRobot src/moveRobot.cpp src/robotController.cpp )
 

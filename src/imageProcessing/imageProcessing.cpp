@@ -18,9 +18,11 @@ using namespace cvb;
  * @brief
  */
 imageProcessing::imageProcessing(): mIt( mNh ) {
+  std::string ns( ros::this_node::getNamespace() );
+  char completeName[60];
+  sprintf( completeName, "%s_Robot_Watcher", ns.c_str() );
 
-  mWindowName = "What the robot sees";
-  mImage_Pub = mIt.advertise( "out", 1 );
+  mWindowName = completeName;
   mImage_Sub = mIt.subscribe( "in", 1, &imageProcessing::imageCallback, this );
   
   cv::namedWindow( mWindowName );
@@ -47,19 +49,14 @@ void imageProcessing::imageCallback( const sensor_msgs::ImageConstPtr& msg ) {
   } catch ( cv_bridge::Exception& e ) {
     ROS_ERROR(" cv_bridge exception: %s", e.what() );
   }
-  /*  
-  if( cv_ptr->image.rows > 60 &&
-      cv_ptr->image.cols > 60 ) {
-    cv::circle( cv_ptr->image, 
-		cv::Point(50, 50), 10,
-		CV_RGB(255, 0, 0) );
-		}*/
+
+  ros::spinOnce();
   mCurrentImage = cv_ptr->image;
-  blobFinder( mCurrentImage );
-  cv::imshow( mWindowName, mBlobImage );
-  cv::waitKey( 3 );
-  
-  mImage_Pub.publish( cv_ptr->toImageMsg() );
+  if( mCurrentImage.rows > 320 ) {
+    blobFinder( mCurrentImage );
+    cv::imshow( mWindowName, mBlobImage );
+    cv::waitKey( 3 );
+  }
   
 }
 
@@ -74,7 +71,7 @@ void imageProcessing::blobFinder( cv::Mat _image ) {
 				 _image.channels() );
   img->imageData = (char*) _image.data;
 
-  cvSetImageROI( img, cvRect(100, 100, 800, 500) );
+  //cvSetImageROI( img, cvRect( 0, 0, img->width - 1, img->height - 1) );
 
   IplImage *grey = cvCreateImage( cvGetSize(img), IPL_DEPTH_8U, 1);
   cvCvtColor(img, grey, CV_BGR2GRAY);
@@ -107,23 +104,21 @@ void imageProcessing::blobFinder( cv::Mat _image ) {
     cvRenderContourPolygon(sPolygon, imgOut, CV_RGB(0, 0, 255));
     cvRenderContourPolygon(cPolygon, imgOut, CV_RGB(0, 255, 0));
 
-    delete cPolygon;
-    delete sPolygon;
-    delete polygon;
+    if( cPolygon ) { delete cPolygon; }
+    if( sPolygon ) { delete sPolygon; }
+    if( polygon ) { delete polygon; }
 
-    // Render internal contours:
-    for (CvContoursChainCode::const_iterator jt=(*it).second->internalContours.begin(); jt!=(*it).second->internalContours.end(); ++jt)
-      cvRenderContourChainCode((*jt), imgOut);
-
-    //stringstream filename;
-    //filename << "blob_" << setw(2) << setfill('0') << i++ << ".png";
-    //cvSaveImageBlob(filename.str().c_str(), imgOut, (*it).second);
+    // Render internal contours: 
+    /*
+      for (CvContoursChainCode::const_iterator jt=(*it).second->internalContours.begin(); jt!=(*it).second->internalContours.end(); ++jt)
+	cvRenderContourChainCode((*jt), imgOut);
+    */
   }
 
   // Copy to image out
-  //  cv::Mat ap( imgOut );
-  mBlobImage = cv::Mat( imgOut );
+  cv::Mat ap( imgOut );
 
+  mBlobImage = ap.clone();
 
   cvReleaseImage(&imgOut);
   cvReleaseImage(&grey);
@@ -131,4 +126,5 @@ void imageProcessing::blobFinder( cv::Mat _image ) {
   cvReleaseImage(&img);
 
   cvReleaseBlobs(blobs);
+
 }
